@@ -26,6 +26,7 @@ final class CameraModel: ObservableObject {
     var hasProfile: Bool { UserDefaults.standard.dictionary(forKey: profileKey) != nil }
 
     func connect() {
+        if device != nil { refresh(); return }
         do {
             device = try UVCDevice(vendorID: Self.vendorID, productID: Self.productID)
             connected = true
@@ -106,8 +107,15 @@ final class CameraModel: ObservableObject {
         }
     }
 
+    /// GET_INFO always returns a single byte regardless of the control's payload size.
+    private func readInfo(_ spec: ControlSpec) -> Int {
+        guard let device,
+              let data = try? device.getRequest(0x86, entity: spec.entity, selector: spec.selector, length: 1) else { return 0 }
+        return Int(data.first ?? 0)
+    }
+
     private func readRange(_ spec: ControlSpec) -> ControlRange {
-        let info = read(0x86, spec) ?? 0
+        let info = readInfo(spec)
         let res = read(0x84, spec) ?? 1
         return ControlRange(min: read(0x82, spec) ?? 0, max: read(0x83, spec) ?? 0,
                             res: Swift.max(res, 1), def: read(0x87, spec) ?? 0,

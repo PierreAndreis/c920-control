@@ -115,7 +115,7 @@ struct ContentView: View {
             HStack {
                 Text(spec.name)
                 Spacer()
-                Text(unit.map { "\(value) \($0)" } ?? "\(value)")
+                Text(verbatim: unit.map { "\(value) \($0)" } ?? "\(value)")
                     .font(.caption.monospacedDigit()).foregroundStyle(.secondary)
                     .onTapGesture(count: 2) { model.set(spec, to: range.def) }
                     .help("Double-click to reset to default (\(range.def))")

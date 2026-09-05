@@ -13,7 +13,8 @@ swiftc -O -swift-version 5 -parse-as-library \
   Sources/App/*.swift build/obj/UVCDevice.o -o "$BIN/C920Control"
 
 cp Info.plist "$APP/Contents/Info.plist"
-codesign --force --sign - "$APP"
+# Ad-hoc by default. Set CODESIGN_IDENTITY to a stable identity so macOS keeps the camera permission across rebuilds.
+codesign --force --sign "${CODESIGN_IDENTITY:--}" "$APP"
 echo "built: $APP"
 [[ "${1:-}" == "--run" ]] && open "$APP"
 if [[ "${1:-}" == "--install" ]]; then
