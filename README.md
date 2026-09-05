@@ -36,6 +36,10 @@ Logitech's own software on macOS is hit and miss, and the C920's autofocus loves
 
 ## Install
 
+### Download
+
+Grab `C920-Control-x.y.z.zip` from the [latest release](https://github.com/PierreAndreis/c920-control/releases/latest), unzip, and drop the app into `Applications`. The build is not notarized, so on first launch right-click the app and choose **Open**.
+
 ### Build from source
 
 Requires macOS 13 or later and the Xcode command line tools (`xcode-select --install`).
